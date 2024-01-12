@@ -1,3 +1,11 @@
+use crate::data_processing::record_to_submission;
+use crate::models::Submission;
+use crate::templates::FillTemplateSingleAnalyte;
+use std::error::Error;
+use std::fs::File;
+use std::io::prelude::*;
+use std::path::Path;
+
 pub fn open_file_as_string(path: &str) -> Result<String, Box<dyn Error>> {
     let path = Path::new(&path);
     let mut file = File::open(&path)?;

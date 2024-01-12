@@ -1,3 +1,6 @@
+use crate::data_processing::format_vectors;
+use crate::models::{Assay, DeviceType};
+
 // TODO: Refactor FillTemplateSingleAnalyte and FillTemplateMultiAnalyte into one pub struct, move to a new file
 pub struct FillTemplateSingleAnalyte {
     pub template: String,

@@ -1,3 +1,10 @@
+use crate::data_processing::format_vectors;
+use crate::models::{Assay, DeviceType, Submission};
+use std::error::Error;
+use std::io;
+use std::process;
+use std::process::Command;
+
 pub fn find_all_cycles(data: &Vec<Submission>) -> Vec<String> {
     let mut cycles: Vec<String> = data.iter().map(|x| x.cycle.clone()).collect();
     cycles.sort();

@@ -1,3 +1,8 @@
+use crate::models::{Assay, Submission};
+use crate::utils::{ask_assay, ask_device_type};
+use csv::StringRecord;
+use std::error::Error;
+
 pub fn find_assays(file: &Vec<Submission>) -> Vec<Assay> {
     let mut assays: Vec<Assay> = file.iter().map(|x| x.test.clone()).collect();
     assays.sort();
