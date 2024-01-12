@@ -1,46 +1,46 @@
 use crate::data_processing::format_vectors;
 use crate::models::{Assay, DeviceType};
 
-// TODO: Refactor FillTemplateSingleAnalyte and FillTemplateMultiAnalyte into one pub struct, move to a new file
-pub struct FillTemplateSingleAnalyte {
+// TODO: Refactor FillTemplate and FillTemplate into one pub struct, move to a new file
+
+pub struct FillTemplate {
     pub template: String,
     pub site: String,
     pub devicetype: DeviceType,
     pub deviceid: String,
-    pub test: Assay,
-    pub cycle: String,
+    pub test: Vec<Assay>,
+    pub cycle: Vec<String>,
     pub datetime: String,
-    pub value1: f64,
-    pub upper1: f64,
-    pub lower1: f64,
-    pub group1values: Vec<f64>,
-    pub value2: f64,
-    pub upper2: f64,
-    pub lower2: f64,
-    pub group2values: Vec<f64>,
+    pub value1: Vec<f64>,
+    pub upper1: Vec<f64>,
+    pub lower1: Vec<f64>,
+    pub group1values: Vec<Vec<f64>>,
+    pub value2: Vec<f64>,
+    pub upper2: Vec<f64>,
+    pub lower2: Vec<f64>,
+    pub group2values: Vec<Vec<f64>>,
     pub units: String,
 }
-
-impl FillTemplateSingleAnalyte {
+impl FillTemplate {
     pub fn new(
         template: String,
         site: String,
         devicetype: DeviceType,
         deviceid: String,
-        test: Assay,
-        cycle: String,
+        test: Vec<Assay>,
+        cycle: Vec<String>,
         datetime: String,
-        value1: f64,
-        upper1: f64,
-        lower1: f64,
-        group1values: Vec<f64>,
-        value2: f64,
-        upper2: f64,
-        lower2: f64,
-        group2values: Vec<f64>,
+        value1: Vec<f64>,
+        upper1: Vec<f64>,
+        lower1: Vec<f64>,
+        group1values: Vec<Vec<f64>>,
+        value2: Vec<f64>,
+        upper2: Vec<f64>,
+        lower2: Vec<f64>,
+        group2values: Vec<Vec<f64>>,
         units: String,
-    ) -> FillTemplateSingleAnalyte {
-        FillTemplateSingleAnalyte {
+    ) -> FillTemplate {
+        FillTemplate {
             template,
             site,
             devicetype,
@@ -100,28 +100,7 @@ impl FillTemplateSingleAnalyte {
         );
         return filled;
     }
-}
 
-pub struct FillTemplateMultiAnalyte {
-    pub template: String,
-    pub site: String,
-    pub devicetype: DeviceType,
-    pub deviceid: String,
-    pub test: Vec<Assay>,
-    pub cycle: String,
-    pub datetime: String,
-    pub value1: Vec<f64>,
-    pub upper1: Vec<f64>,
-    pub lower1: Vec<f64>,
-    pub group1values: Vec<Vec<f64>>,
-    pub value2: Vec<f64>,
-    pub upper2: Vec<f64>,
-    pub lower2: Vec<f64>,
-    pub group2values: Vec<Vec<f64>>,
-    pub units: String,
-}
-
-impl FillTemplateMultiAnalyte {
     fn find_number_of_tests(&self) -> usize {
         return self.test.len();
     }
@@ -133,6 +112,4 @@ impl FillTemplateMultiAnalyte {
         }
         return fields;
     }
-
-    fn fill(&self) {}
 }

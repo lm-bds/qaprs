@@ -1,7 +1,7 @@
 use crate::data_processing::{calculate_cycle_mean, find_allowable_range};
 use crate::file_io::open_file_as_string;
 use crate::models::{Assay, Submission};
-use crate::templates::FillTemplateSingleAnalyte;
+use crate::templates::FillTemplate;
 use crate::utils::find_group_values;
 use std::error::Error;
 use std::process;
@@ -21,10 +21,10 @@ pub fn single_analyte(
     cycles: &Vec<String>,
     assay: &Vec<Assay>,
     file: Vec<Submission>,
-) -> Result<Vec<FillTemplateSingleAnalyte>, Box<dyn Error>> {
+) -> Result<Vec<FillTemplate>, Box<dyn Error>> {
     println!("Single Analyte");
     let assay = assay[0].clone();
-    let filltemplates: Vec<FillTemplateSingleAnalyte> = sites
+    let filltemplates: Vec<FillTemplate> = sites
         .iter()
         .map(|site| {
             let cycle_mean1 = calculate_cycle_mean(&file, cycles[0].to_string());
@@ -62,7 +62,7 @@ pub fn single_analyte(
                     process::exit(1);
                 }
             };
-            let filltemplate = FillTemplateSingleAnalyte::new(
+            let filltemplate = FillTemplate::new(
                 template_content,
                 site.clone(),
                 file[0].devicetype.clone(),
