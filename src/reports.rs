@@ -1,7 +1,7 @@
 use crate::data_processing::{calculate_cycle_mean, find_allowable_range};
 use crate::file_io::open_file_as_string;
 use crate::models::{Assay, Submission};
-use crate::templates::FillTemplate;
+use crate::templates::FillTemplateSingleAnalyte;
 use crate::utils::find_group_values;
 use std::error::Error;
 use std::process;
@@ -21,10 +21,10 @@ pub fn single_analyte(
     cycles: &Vec<String>,
     assay: &Vec<Assay>,
     file: Vec<Submission>,
-) -> Result<Vec<FillTemplate>, Box<dyn Error>> {
+) -> Result<Vec<FillTemplateSingleAnalyte>, Box<dyn Error>> {
     println!("Single Analyte");
     let assay = assay[0].clone();
-    let filltemplates: Vec<FillTemplate> = sites
+    let filltemplates: Vec<FillTemplateSingleAnalyte> = sites
         .iter()
         .map(|site| {
             let cycle_mean1 = calculate_cycle_mean(&file, cycles[0].to_string());
@@ -33,7 +33,7 @@ pub fn single_analyte(
             let (upper2, lower2) = find_allowable_range(cycle_mean2, assay.clone());
             let group1_values = find_group_values(&file, &cycles[0]);
             let group2_values = find_group_values(&file, &cycles[1]);
-            let value1 = vec![file
+            let value1 = file
                 .iter()
                 .filter(|x| &x.site == site)
                 .filter(|x| &x.cycle == &cycles[0])
@@ -43,8 +43,8 @@ pub fn single_analyte(
                     .iter()
                     .filter(|x| &x.site == site)
                     .filter(|x| &x.cycle == &cycles[0])
-                    .count() as f64];
-            let value2 = vec![file
+                    .count() as f64;
+            let value2 = file
                 .iter()
                 .filter(|x| &x.site == site)
                 .filter(|x| &x.cycle == &cycles[1])
@@ -54,7 +54,7 @@ pub fn single_analyte(
                     .iter()
                     .filter(|x| &x.site == site)
                     .filter(|x| &x.cycle == &cycles[1])
-                    .count() as f64];
+                    .count() as f64;
             let template_content = match open_file_as_string("./Template/template.tex") {
                 Ok(template_content) => template_content,
                 Err(error) => {
@@ -62,33 +62,24 @@ pub fn single_analyte(
                     process::exit(1);
                 }
             };
-            let filltemplate = {
-                let site = site.clone();
-                let devicetype = file[0].devicetype.clone();
-                let deviceid = file[0].deviceid.clone();
-                let test = vec![assay.clone()];
-                let cycle = cycles.clone();
-                let datetime = file[0].datetime.clone();
-                let units = file[0].units.clone();
-                FillTemplate {
-                    template: template_content,
-                    site,
-                    devicetype,
-                    deviceid,
-                    test,
-                    cycle,
-                    datetime,
-                    value1: value1,
-                    upper1: vec![upper1],
-                    lower1: vec![lower1],
-                    group1values: vec![group1_values],
-                    value2: value2,
-                    upper2: vec![upper2],
-                    lower2: vec![lower2],
-                    group2values: vec![group2_values],
-                    units,
-                }
-            };
+            let filltemplate = FillTemplateSingleAnalyte::new(
+                template_content,
+                site.clone(),
+                file[0].devicetype.clone(),
+                file[0].deviceid.clone(),
+                assay.clone(),
+                cycles[0].clone(),
+                file[0].datetime.clone(),
+                value1,
+                upper1,
+                lower1,
+                group1_values,
+                value2,
+                upper2,
+                lower2,
+                group2_values,
+                file[0].units.clone(),
+            );
             return filltemplate;
         })
         .collect();
