@@ -10,7 +10,7 @@ Execution: On execution, the program will solicit inputs, specifically the file 
 Input File Format: The CSV file should adhere to a structured format encompassing necessary fields such as site, device type, device ID, test type, cycle, datetime, value, and units.
 ## Core Functionalities
 Enumerations (DeviceType, Assay): Defined to categorize and manage various device types and assays systematically.
-Data Structures (Submission, FillTemplate, FillTemplate): Utilized for organizing and storing data efficiently.
+Data Structures (Submission, FillTemplateSingleAnalyte, FillTemplateMultiAnalyte): Utilized for organizing and storing data efficiently.
 Methods Implementation: Ensures functional encapsulation and efficient execution of tasks like template filling and data initialization.
 Analytical Functions: Algorithms developed to perform analytical tasks such as data aggregation and calculation.
 Report Generation Mechanism: Automated process for generating reports based on analyzed data.

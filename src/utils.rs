@@ -29,9 +29,6 @@ pub fn find_group_values(data: &Vec<Submission>, cycle: &String) -> Vec<f64> {
     return values;
 }
 
-    pub fn stringify_collection(collection : &Vec<f64>) -> String {
-		collection.iter().map(|x| x.to_string()).collect::<Vec<String>>().join(", ")
-	}
 pub fn ask_device_type(device_type: &str) -> DeviceType {
     let device_type_enum = match device_type {
         "Abbott" => DeviceType::Abbott,
