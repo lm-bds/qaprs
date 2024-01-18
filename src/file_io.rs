@@ -1,6 +1,7 @@
 use crate::data_processing::record_to_submission;
 use crate::models::Submission;
-use crate::templates::FillTemplateSingleAnalyte;
+use crate::templates::FillTemplate;
+use crate::utils::stringify_collection;
 use std::error::Error;
 use std::fs::File;
 use std::io::prelude::*;
@@ -25,13 +26,13 @@ pub fn open_csv_as_submissions(path: String) -> Result<Vec<Submission>, Box<dyn 
 }
 
 pub fn write_filltemplate_to_file(
-    filltemplate: &FillTemplateSingleAnalyte,
+    filltemplate: &FillTemplate,
     new_dir: &str,
 ) -> Result<(), Box<dyn Error>> {
     let filled = filltemplate.fill();
     let file_name = format!(
         "{}{:?}{}.tex",
-        filltemplate.site, filltemplate.test, filltemplate.cycle
+        filltemplate.site, filltemplate.test, filltemplate.cycle[0] 
     );
     let file_path = Path::new(new_dir).join(file_name); // Example filename
     let mut file = File::create(&file_path)?;
