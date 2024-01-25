@@ -1,0 +1,44 @@
+use crate::data_processing::record_to_submission;
+use crate::models::Submission;
+use crate::templates::FillTemplate;
+use crate::utils::stringify_collection;
+use std::error::Error;
+use std::fs::File;
+use std::io::prelude::*;
+use std::path::Path;
+
+pub fn open_file_as_string(path: &str) -> Result<String, Box<dyn Error>> {
+    let path = Path::new(&path);
+    let mut file = File::open(&path)?;
+    let mut contents = String::new();
+    file.read_to_string(&mut contents)?;
+    return Ok(contents);
+}
+
+pub fn open_csv_as_submissions(path: &str) -> Result<Vec<Submission>, Box<dyn Error>> {
+    let mut rdr = csv::Reader::from_path(path)?;
+    let submissions: Vec<Submission> = rdr
+        .records()
+        .map(|result| result.unwrap())
+        .map(|record| record_to_submission(record).unwrap())
+        .collect();
+    return Ok(submissions);
+}
+
+pub fn write_filltemplate_to_file(
+    filltemplate: &FillTemplate,
+    new_dir: &str,
+) -> Result<(), Box<dyn Error>> {
+    let filled = filltemplate.fill();
+    let mut file_name = format!(
+        "{}{:?}{}{}.tex",
+        filltemplate.site, filltemplate.test, filltemplate.cycle[0], filltemplate.cycle[1],
+    );
+    file_name = file_name.replace("[", "");
+    file_name = file_name.replace("]", "");
+    file_name = file_name.replace(" ", "");
+    let file_path = Path::new(new_dir).join(file_name); // Example filename
+    let mut file = File::create(&file_path)?;
+    file.write_all(filled.as_bytes())?;
+    return Ok(());
+}

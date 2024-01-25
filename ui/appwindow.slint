@@ -1,0 +1,138 @@
+import { Button, VerticalBox , HorizontalBox, GroupBox, StandardTableView} from "std-widgets.slint";
+import { Page } from "page.slint";
+
+
+export global TableViewPageAdapter  {
+    in property <[[StandardListViewItem]]> row_data: [
+        
+        [	{text : "RFDS"}, {text : "cobas h 232"}, {text : "KS0406156"}, {text : "Troponin"}, {text : "23-08"}, {text : "1/1/2024"}, {text : "39"}, {text : "ng/L"}],
+        [	{text : "RFDS"}, {text : "cobas h 232"}, {text : "KS0406156"}, {text : "Troponin"}, {text : "23-09"}, {text : "1/1/2024"}, {text : "39"}, {text : "ng/L"}],
+
+    ];
+
+    callback sort_ascending(int);
+    callback sort_descending(int);
+}
+
+export component TableViewPage inherits Page {
+    title: @tr("TableView");
+    show-enable-switch: false;
+    description: @tr("StandardTableView can be used to display a list of text elements in columns and rows. It can be imported from \"std-widgets.slint\"");
+
+    HorizontalBox {
+        vertical-stretch: 1;
+
+        GroupBox {
+            title: @tr("StandardTableView");
+            vertical-stretch: 0;
+
+            StandardTableView {
+                sort-ascending(index) => {
+                    TableViewPageAdapter.sort_ascending(index);
+                }
+
+                sort-descending(index) => {
+                    TableViewPageAdapter.sort-descending(index);
+                }
+
+                columns: [
+                    { title: @tr("Site") },
+                    { title: @tr("Device Type") },
+                    { title: @tr("Device ID") },
+                    { title: @tr("Test") },
+                    { title: @tr("Cycle") },
+                    { title: @tr("Date/Time") },
+                    { title: @tr("Value") },
+                    { title: @tr("Units") },
+                ];
+                rows: TableViewPageAdapter.row_data;
+            }
+        }
+    }
+}
+
+
+export component AppWindow inherits Window {
+    width : 800px;
+    height : 600px;
+    title : "Report Generator";
+
+    in-out property<string> manifest : "Please Select File";
+    in-out property<string> output_directory : "Not yet created";
+    callback show-open-dialog();
+    callback generate-latex-files(string);
+    callback run-lualatex-on-directory(string);
+
+    VerticalBox {
+        HorizontalBox {
+        vertical-stretch: 1;
+
+        GroupBox {
+            title: @tr("Example Headers");
+            vertical-stretch: 0;
+
+            StandardTableView {
+                sort-ascending(index) => {
+                    TableViewPageAdapter.sort_ascending(index);
+                }
+
+                sort-descending(index) => {
+                    TableViewPageAdapter.sort-descending(index);
+                }
+
+                columns: [
+                    { title: @tr("Site") },
+                    { title: @tr("Device Type") },
+                    { title: @tr("Device ID") },
+                    { title: @tr("Test") },
+                    { title: @tr("Cycle") },
+                    { title: @tr("Date/Time") },
+                    { title: @tr("Value") },
+                    { title: @tr("Units") },
+                ];
+                rows: TableViewPageAdapter.row_data;
+            }
+        }
+    }
+
+
+            VerticalBox {
+        Text {
+            text: "Please Select File";
+        }
+        Button {
+            text: "Choose File";
+            clicked => {
+                root.show-open-dialog();
+            }
+        }
+    }
+
+            VerticalBox {
+        Text {
+            text: "Run Report Generator on: \n" + manifest;
+        }
+        Button {
+            text: "Run";
+            primary: true;
+            clicked => {
+                root.generate-latex-files(manifest);
+            }
+        }
+    }
+            VerticalBox {
+        Text {
+            text: "Run LuaLaTeX on output directory: " + output_directory;
+        }
+        Button {
+            text: "LuaLaTeX";
+            primary: true;
+            clicked => {
+                root.run-lualatex-on-directory(output_directory);
+                }
+            }
+        }
+
+
+}
+}
