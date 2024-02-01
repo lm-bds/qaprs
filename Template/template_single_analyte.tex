@@ -1,0 +1,125 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{enumerate}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+\usetikzlibrary{automata,positioning}
+
+
+\author{iCCnet scientific team}
+\title{Quality Assurance {{cycle}} {{test}} }
+
+\begin{document}
+
+Site: {{site}}
+
+Device Type {{devicetype}}
+Device ID : {{deviceid}}
+
+
+Dear Participant,
+\hline
+Please find enclosed the results from the {{test}} External quality program. This report is for the {{cycle}} Cycle. As part of our EQA program, we provide sites with samples of unknown concentration for testing. The results from all the devices are then analysed and compared. The quality assurance process ensures critical decisions for your patients are accurate and timely. To comply with point of care standards and accreditation guidelines all sites should perform external quality control testing. Please ensure all samples are tested and submitted as per the schedule
+
+The graph on the following page show how your device compares to other devices within our network across all sites. The red dot denotes your submission. If it is contained within the green box your submission is within the allowable limits of performance.
+
+If you have any further questions or queries regarding the external quality program, please don't hesitate to contact us.
+\hline
+Kind regards,
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+\textbf{DEVICE} & \textbf{SERIAL} & \textbf{ {{cycle_0}} } & \textbf{ {{cycle_1}} } & \textbf{ Mean } \\ \hline
+{{test}}         & {{serial}}       & {{value1_0}} {{units}} & {{value2_0}} {{units}}    & {{mean}} mg/L    \\ \hline
+\end{tabular}
+\caption{Results Table}
+\label{your-table-label}
+\end{table}
+
+
+Test : {{test}}
+Cycles : {{cycle}}
+Datetime:  {{datetime}}
+value1 : {{value1}}
+upper1 : {{upper1}}
+lower1 : {{lower1}}
+value2 : {{value2}}
+upper2 : {{upper2}}
+lower2 : {{lower2}}
+units : {{units}}
+
+
+group1values : {{group1values}}
+
+
+group2values : {{group2values}}
+
+{{table}}
+
+\addplot+ [hist={bins=10, data min=0, data max=100}]
+    table[row sep=\\,y index=0] {
+    data \\
+    45 \\
+    60 \\
+    15 \\
+    70 \\
+    20 \\
+    35 \\
+    30 \\
+    50 \\
+    55 \\
+    25 \\
+    40 \\
+    65 \\
+    75 \\
+    10 \\
+    80 \\
+    85 \\
+    90 \\
+    95 \\
+};
+
+% Highlighting a specific bin
+\draw [red, thick] (axis cs:45,0) rectangle (axis cs:55,3); % adjust the coordinates and dimensions as needed
+
+
+
+
+\addplot+ [hist={bins=10, data min=0, data max=100}]
+    table[row sep=\\,y index=0] {
+    data \\
+    45 \\
+    60 \\
+    15 \\
+    70 \\
+    20 \\
+    35 \\
+    30 \\
+    50 \\
+    55 \\
+    25 \\
+    40 \\
+    65 \\
+    75 \\
+    10 \\
+    80 \\
+    85 \\
+    90 \\
+    95 \\
+};
+
+% Highlighting a specific bin
+\draw [red, thick] (axis cs:45,0) rectangle (axis cs:55,3); % adjust the coordinates and dimensions as needed
+
+
+/end{document}
