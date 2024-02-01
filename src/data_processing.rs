@@ -28,6 +28,16 @@ pub fn format_vectors(v1: &Vec<f64>, v2: &Vec<f64>) -> String {
     result
 }
 
+fn format_for_histogram(vector : &Vec<f64>) -> String {
+
+    let mut result = String::new();
+    for x in vector.iter(){
+        result.push_str(&format!("{:.1} \\ \n", x));
+    }
+    result
+}
+
+
 pub fn calculate_cycle_mean(file: &Vec<Submission>, cycle: String) -> f64 {
     let cycle_data: Vec<Submission> = file.iter().filter(|x| x.cycle == cycle).cloned().collect();
     let sum: f64 = cycle_data.iter().map(|x| x.value).sum();
